@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Hari Raya Idul Fitri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Judul utama -->
+    <header>
+        
+        <h1>&#127769;Selamat Hari Raya Idul Fitri 1446 hijriah&#11088;</h1>
+        
+    </header>
+
+    <!-- Efek bintang jatuh -->
+    <div class="falling-stars"></div>
+
+    <!-- Container utama -->
+    <div class="container">
+        <div class="icons">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-mosque"></i>
+            <i class="fas fa-star-and-crescent"></i>
+        </div>
+        <!-- Pesan ucapan -->
+        <p class="ucapan" id="message"></p>
+        <button class="btn" id="nextBtn" onclick="changeMessage()">Lanjut</button>
+        <button class="btn" id="exitBtn" onclick="exitPage()" style="display: none;">Keluar</button>
+    </div>
+
+    <!-- Musik dengan autoplay -->
+    <audio id="bg-music" auto play mutedloop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let messages = [
+            "🌙 saya dan keluarga besar ingin meminta maaf atas segala kesalahan, baik perkataan maupun perbuatan. 🙏",
+            "😊 Kalau ketua banyak salah, Dari kata atau perbuatan yang tanpa sengaja.mohon dimaafkan ! 😅",
+            "🙈 Kalau ada salah kata, perbuatan, atau typo di chat, chat belum di balas, mohon dimaklumi! 😆🙏",
+            "Jangan lupe beghusek ay! 😊",
+            "Bietran ripo firnando 😎 ",
+            "Minal aidin wal faidzin🙏",
+
+        ];
+
+        let index = 0;
+        let messageElement = document.getElementById("message");
+        let nextBtn = document.getElementById("nextBtn");
+        let exitBtn = document.getElementById("exitBtn");
+
+        function changeMessage() {
+            messageElement.style.opacity = 0;
+            messageElement.style.transform = "translateY(-10px)";
+
+            setTimeout(() => {
+                index++;
+                if (index < messages.length) {
+                    messageElement.innerText = messages[index];
+                    messageElement.style.opacity = 1;
+                    messageElement.style.transform = "translateY(0)";
+                } else {
+                    // Sembunyikan tombol Geser & tampilkan tombol Keluar
+                    nextBtn.style.display = "none";
+                    exitBtn.style.display = "inline-block";
+                }
+            }, 500);
+        }
+
+        // Set pesan awal
+        messageElement.innerText = messages[index];
+
+        function exitPage() {
+            if (window.close) {
+                window.close();
+            } else {
+                alert("Browser tidak mengizinkan halaman ditutup secara otomatis. Silakan tutup secara manual.");
+            }
+        }
+
+        function createFallingStar() {
+            let star = document.createElement("div");
+            star.classList.add("star");
+            document.querySelector(".falling-stars").appendChild(star);
+
+            let startPosition = Math.random() * window.innerWidth;
+            let duration = Math.random() * 3 + 2;
+            let size = Math.random() * 3 + 2;
+
+            star.style.left = startPosition + "px";
+            star.style.width = size + "px";
+            star.style.height = size + "px";
+            star.style.animationDuration = duration + "s";
+
+            setTimeout(() => {
+                star.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createFallingStar, 500);
+
+        window.onload = function() {
+             let audio = document.getElementById("bg-music");
+
+    // Unmute dan coba play otomatis
+            audio.muted = false;
+            let playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("Musik diputar otomatis.");
+                }).catch(() => {
+                    console.log("Autoplay diblokir, musik akan dimainkan setelah interaksi.");
+            
+            // Jika autoplay diblokir, tunggu interaksi pertama
+                    document.addEventListener("click", function() {
+                        audio.play();
+                    }, { once: true });
+             });
+          }
+        };
+
+           
+    
+    </script>
+
+</body>
+</html>
